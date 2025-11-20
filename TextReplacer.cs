@@ -39,6 +39,45 @@ public static class TextReplacer
         }
     }
 
+    public static void InFolder(string folderPath, string extension, string oldText, string newText)
+    {
+        if (!Directory.Exists(folderPath))
+        {
+            Console.WriteLine($"ERROR: Folder not found: {folderPath}");
+            return;
+        }
+
+        var files = Directory.GetFiles(folderPath, $"*{extension}", SearchOption.AllDirectories)
+            .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\"))
+            .OrderBy(f => f);
+
+        int totalReplaced = 0;
+        int filesChanged = 0;
+
+        foreach (var file in files)
+        {
+            try
+            {
+                string content = File.ReadAllText(file, Encoding.UTF8);
+                string newContent = content.Replace(oldText, newText, out int count);
+
+                if (count > 0)
+                {
+                    File.WriteAllText(file, newContent, Encoding.UTF8);
+                    Console.WriteLine($"Replaced {count} time(s) in: {file}");
+                    totalReplaced += count;
+                    filesChanged++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR in {Path.GetFileName(file)}: {ex.Message}");
+            }
+        }
+
+        Console.WriteLine($"DONE! Changed {filesChanged} files. Total replacements: {totalReplaced}");
+    }
+
     // Helper: counts replacements
     private static string Replace(this string source, string oldValue, string newValue, out int count)
     {
