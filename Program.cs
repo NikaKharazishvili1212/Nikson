@@ -5,7 +5,7 @@ class Program
     {
         string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-        TextCollector.CollectInFolder($@"{desktop}\aqa-fullstack", ".cs, .json");
+        TextCollector.CollectInFolder($@"{desktop}\aqa-fullstack", ".cs, .json, .sql, .csproj");
         // TextReplacer.InFile($@"{desktop}\ss.txt", "datu2", "ss");
         // TextReplacer.InFolder($@"{desktop}\aqa-fullstack", ".cs", "[Parallelizable(ParallelScope.All)]", "[Parallelizable(ParallelScope.Fixtures)]");
     }
